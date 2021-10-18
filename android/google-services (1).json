@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "222446429726",
+    "project_id": "pocket-money-a794b",
+    "storage_bucket": "pocket-money-a794b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:222446429726:android:53b05c1231805fe279f00f",
+        "android_client_info": {
+          "package_name": "com.example.pmoney"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "222446429726-m0oc85t3m1tufqu0brs5fi0ivg64mm80.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyADMRuESc0nGjONQ-zoBV2uNXNwlUEV6tA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "222446429726-m0oc85t3m1tufqu0brs5fi0ivg64mm80.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

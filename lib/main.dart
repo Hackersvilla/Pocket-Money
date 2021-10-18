@@ -4,6 +4,7 @@ import 'Verification/otp.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:animated_text_kit/animated_text_kit.dart';
 
 void main() {
   runApp(const MyApp());
@@ -55,13 +56,17 @@ class _MyHomeState extends State<MyHome> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
+            width: 300.w,
+            height: 300.h,
             child: Lottie.asset('assest/anim/animation.json'),
           ),
-          const Text(
-            "Pocket Money",
-            style: TextStyle(
-              fontSize: 20,
-            ),
+          AnimatedTextKit(
+            animatedTexts: [
+              TypewriterAnimatedText(
+                'Pocket Money',
+                textStyle: const TextStyle(fontSize: 30),
+              ),
+            ],
           ),
         ],
       ),
