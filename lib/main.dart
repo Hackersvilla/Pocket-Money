@@ -55,10 +55,12 @@ class _MyHomeState extends State<MyHome> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Container(
-            width: 300.w,
-            height: 300.h,
-            child: Lottie.asset('assest/anim/animation.json'),
+          Center(
+            child: Container(
+              width: 300.w,
+              height: 300.h,
+              child: Lottie.asset('assest/anim/animation.json'),
+            ),
           ),
           AnimatedTextKit(
             animatedTexts: [
