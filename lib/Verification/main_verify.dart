@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 enum LoginScreen { SHOW_MOBILE_SCREEN, SHOW_OTP_SCREEN }
 
@@ -18,6 +19,26 @@ class _Main_verifyState extends State<Main_verify> {
 
   //variables
   final _textcontroller = TextEditingController();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  String verificationID = "";
+
+  //functions
+
+  void getotp() async {
+    await _auth.verifyPhoneNumber(
+        phoneNumber: "+91${_textcontroller.text}",
+        verificationCompleted: (phoneAuthCredential) async {},
+        verificationFailed: (verificationFailed) {
+          print(verificationFailed);
+        },
+        codeSent: (verificationID, resendingToken) async {
+          setState(() {
+            currentScreen = LoginScreen.SHOW_OTP_SCREEN;
+            this.verificationID = verificationID;
+          });
+        },
+        codeAutoRetrievalTimeout: (verificationID) async {});
+  }
 
   //widget for showing mobile screen first
   showMobile(context) {
@@ -62,7 +83,7 @@ class _Main_verifyState extends State<Main_verify> {
 
               //for button click
               GestureDetector(
-                onTap: () {},
+                onTap: getotp,
                 child: Container(
                   width: 170.w,
                   height: 50.h,
