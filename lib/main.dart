@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:lottie/lottie.dart';
-import 'Verification/otp.dart';
+import 'Verification/main_verify.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -45,7 +45,7 @@ class _MyHomeState extends State<MyHome> {
     Timer(
         const Duration(seconds: 6),
         () => Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => Otp())));
+            context, MaterialPageRoute(builder: (context) => Main_verify())));
   }
 
   @override
