@@ -59,7 +59,7 @@ class _MyHomeState extends State<MyHome> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Center(
-            child: Container(
+            child: SizedBox(
               width: 300.w,
               height: 300.h,
               child: Lottie.asset('assest/anim/animation.json'),
