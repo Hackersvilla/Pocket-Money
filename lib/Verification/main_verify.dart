@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:pmoney/Main/home.dart';
+import 'package:advance_notification/advance_notification.dart';
 
 enum LoginScreen {
   SHOW_MOBILE_SCREEN,
@@ -23,7 +24,7 @@ class _Main_verifyState extends State<Main_verify> {
 
   //variables
   String code_by_user = "";
-  final _textcontroller = TextEditingController();
+  String text_by_user = "";
   final _controller = ScrollController();
   final FirebaseAuth _auth = FirebaseAuth.instance;
   String verificationID = "";
@@ -33,7 +34,6 @@ class _Main_verifyState extends State<Main_verify> {
   void signInWithPhoneAuthCred(AuthCredential phoneAuthCredential) async {
     try {
       final authCred = await _auth.signInWithCredential(phoneAuthCredential);
-
       if (authCred.user != null) {
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => Home()));
@@ -47,19 +47,47 @@ class _Main_verifyState extends State<Main_verify> {
   }
 
   void getotp() async {
-    await _auth.verifyPhoneNumber(
-        phoneNumber: "+91${_textcontroller.text}",
-        verificationCompleted: (phoneAuthCredential) async {},
-        verificationFailed: (verificationFailed) {
-          print(verificationFailed);
-        },
-        codeSent: (verificationID, resendingToken) async {
-          setState(() {
-            currentScreen = LoginScreen.SHOW_OTP_SCREEN;
-            this.verificationID = verificationID;
-          });
-        },
-        codeAutoRetrievalTimeout: (verificationID) async {});
+    if (text_by_user.isEmpty) {
+      const AdvanceSnackBar(
+              message: "Write Number.",
+              bgColor: Color(0xff3db536),
+              textColor: Colors.white,
+              textAlign: TextAlign.center,
+              textSize: 12,
+              isFixed: false)
+          .show(context);
+    } else if (text_by_user.length < 10) {
+      const AdvanceSnackBar(
+              message: "Invalid Number.",
+              bgColor: Color(0xff3db536),
+              textAlign: TextAlign.center,
+              textSize: 12,
+              textColor: Colors.white,
+              isFixed: false)
+          .show(context);
+    } else {
+      const AdvanceSnackBar(
+              message: "Verifying.",
+              bgColor: Color(0xff3db536),
+              textAlign: TextAlign.center,
+              textSize: 12,
+              textColor: Colors.white,
+              isFixed: false)
+          .show(context);
+      await _auth.verifyPhoneNumber(
+          phoneNumber: "+91${text_by_user}",
+          verificationCompleted: (phoneAuthCredential) async {},
+          verificationFailed: (verificationFailed) {
+            print(verificationFailed);
+          },
+          codeSent: (verificationID, resendingToken) async {
+            setState(() {
+              currentScreen = LoginScreen.SHOW_OTP_SCREEN;
+              this.verificationID = verificationID;
+            });
+          },
+          codeAutoRetrievalTimeout: (verificationID) async {});
+    }
   }
 
   void verify_otp() {
@@ -71,62 +99,84 @@ class _Main_verifyState extends State<Main_verify> {
   //widget for showing mobile screen first
   showMobile(context) {
     return SafeArea(
-      child: SingleChildScrollView(
-        child: Center(
-          child: Column(
-            children: [
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: 20.w),
-                width: 300.w,
-                height: 300.h,
-                child: Image.asset('assest/images/first.png'),
-              ),
-              Container(
-                margin: EdgeInsets.symmetric(vertical: 20.w),
-                child: Text(
-                  "OTP Verification",
-                  style: TextStyle(
-                    fontSize: 25.sp,
-                  ),
+      child: ScrollConfiguration(
+        behavior: const ScrollBehavior()
+          ..buildOverscrollIndicator(
+              context,
+              Container(),
+              ScrollableDetails(
+                  direction: AxisDirection.down, controller: _controller)),
+        child: SingleChildScrollView(
+          child: Center(
+            child: Column(
+              children: [
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: 20.w),
+                  width: 300.w,
+                  height: 300.h,
+                  child: Image.asset('assest/images/first.png'),
                 ),
-              ),
-              // ignore: prefer_const_constructors
-              Container(
-                padding: EdgeInsets.all(30.sp),
-                child: TextField(
-                  maxLength: 10,
-                  keyboardType: TextInputType.phone,
-                  controller: _textcontroller,
-                  decoration: const InputDecoration(
-                    prefixText: "+91 ",
-                    label: Text("Enter Paytm Number"),
-                    labelStyle: TextStyle(color: Colors.grey),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
+                Container(
+                  margin: EdgeInsets.symmetric(vertical: 20.w),
+                  child: Text(
+                    "OTP Verification",
+                    style: TextStyle(
+                      fontSize: 25.sp,
                     ),
                   ),
                 ),
-              ),
+                // ignore: prefer_const_constructors
+                Container(
+                  padding: EdgeInsets.all(30.sp),
+                  child: TextField(
+                    onChanged: (v) {
+                      text_by_user = v;
+                    },
+                    maxLength: 10,
+                    keyboardType: TextInputType.phone,
+                    decoration: const InputDecoration(
+                      prefixText: "+91 ",
+                      label: Text("Enter Paytm Number"),
+                      labelStyle: TextStyle(color: Colors.grey),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(20)),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(20)),
+                      ),
+                    ),
+                  ),
+                ),
 
-              //for button click
-              GestureDetector(
-                onTap: getotp,
-                child: Container(
-                  width: 170.w,
-                  height: 50.h,
-                  decoration: const BoxDecoration(
-                      color: Color(0xffFF9C93),
-                      borderRadius: BorderRadius.all(Radius.circular(20))),
-                  child: const Center(
-                    child: Text("GET OTP",
-                        style: TextStyle(fontSize: 15, color: Colors.black54)),
+                //for button click
+                GestureDetector(
+                  onTap: getotp,
+                  child: Container(
+                    width: 170.w,
+                    height: 50.h,
+                    decoration: const BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                            color: Color(0xffFF9C93),
+                            offset: Offset(
+                              5.0,
+                              5.0,
+                            ),
+                            blurRadius: 20.0,
+                            spreadRadius: 1.0,
+                          )
+                        ],
+                        color: Color(0xffFF9C93),
+                        borderRadius: BorderRadius.all(Radius.circular(20))),
+                    child: const Center(
+                      child: Text("GET OTP",
+                          style:
+                              TextStyle(fontSize: 15, color: Colors.black54)),
+                    ),
                   ),
-                ),
-              )
-            ],
+                )
+              ],
+            ),
           ),
         ),
       ),

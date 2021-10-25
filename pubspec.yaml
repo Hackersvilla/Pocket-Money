@@ -54,6 +54,10 @@ dependencies:
   #otp textfield
   flutter_otp_text_field: ^1.0.0
 
+  #styledtoast
+  flutter_styled_toast: ^2.0.0
+  advance_notification: ^1.0.5
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
