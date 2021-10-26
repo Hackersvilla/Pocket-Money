@@ -58,6 +58,9 @@ dependencies:
   flutter_styled_toast: ^2.0.0
   advance_notification: ^1.0.5
 
+  #shared prefrences
+  shared_preferences: ^2.0.8
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

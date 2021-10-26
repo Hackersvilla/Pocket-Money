@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'package:lottie/lottie.dart';
+import 'package:pmoney/Main/home.dart';
+import 'package:pmoney/Services/shared_pref_ser.dart';
 import 'Verification/main_verify.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -34,6 +36,8 @@ class MyApp extends StatelessWidget {
   }
 }
 
+SharedPref pref = SharedPref();
+
 class MyHome extends StatefulWidget {
   const MyHome({Key? key}) : super(key: key);
 
@@ -45,10 +49,23 @@ class _MyHomeState extends State<MyHome> {
   @override
   void initState() {
     super.initState();
-    Timer(
-        const Duration(seconds: 6),
-        () => Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => Main_verify())));
+
+    pref.read_data("number").then((value) => {
+          if (value == null)
+            {
+              Timer(
+                  const Duration(seconds: 6),
+                  () => Navigator.pushReplacement(context,
+                      MaterialPageRoute(builder: (context) => Main_verify())))
+            }
+          else
+            {
+              Timer(
+                  const Duration(seconds: 6),
+                  () => Navigator.pushReplacement(
+                      context, MaterialPageRoute(builder: (context) => Home())))
+            }
+        });
   }
 
   @override

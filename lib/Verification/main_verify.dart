@@ -1,14 +1,27 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:pmoney/Main/home.dart';
 import 'package:advance_notification/advance_notification.dart';
+import 'package:pmoney/Services/shared_pref_ser.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 enum LoginScreen {
   SHOW_MOBILE_SCREEN,
   SHOW_OTP_SCREEN,
 }
+
+late String final_no;
+SharedPref pref = SharedPref();
+String code_by_user = "";
+String text_by_user = "";
+final _controller = ScrollController();
+final FirebaseAuth _auth = FirebaseAuth.instance;
+
+LoginScreen currentScreen = LoginScreen.SHOW_MOBILE_SCREEN;
 
 // ignore: camel_case_types
 class Main_verify extends StatefulWidget {
@@ -20,16 +33,13 @@ class Main_verify extends StatefulWidget {
 
 // ignore: camel_case_types
 class _Main_verifyState extends State<Main_verify> {
-  LoginScreen currentScreen = LoginScreen.SHOW_MOBILE_SCREEN;
-
-  //variables
-  String code_by_user = "";
-  String text_by_user = "";
-  final _controller = ScrollController();
-  final FirebaseAuth _auth = FirebaseAuth.instance;
   String verificationID = "";
-
   //functions
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   void signInWithPhoneAuthCred(AuthCredential phoneAuthCredential) async {
     try {
@@ -66,6 +76,7 @@ class _Main_verifyState extends State<Main_verify> {
               isFixed: false)
           .show(context);
     } else {
+      pref.save_data(text_by_user);
       const AdvanceSnackBar(
               message: "Verifying.",
               bgColor: Color(0xff3db536),
