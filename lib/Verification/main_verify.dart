@@ -21,7 +21,7 @@ String text_by_user = "";
 final _controller = ScrollController();
 final FirebaseAuth _auth = FirebaseAuth.instance;
 
-LoginScreen currentScreen = LoginScreen.SHOW_MOBILE_SCREEN;
+LoginScreen currentScreen = LoginScreen.SHOW_OTP_SCREEN;
 
 // ignore: camel_case_types
 class Main_verify extends StatefulWidget {
@@ -78,7 +78,7 @@ class _Main_verifyState extends State<Main_verify> {
     } else {
       pref.save_data(text_by_user);
       const AdvanceSnackBar(
-              message: "Verifying.",
+              message: "Verify you are not robot!",
               bgColor: Color(0xff3db536),
               textAlign: TextAlign.center,
               textSize: 12,
@@ -101,7 +101,21 @@ class _Main_verifyState extends State<Main_verify> {
     }
   }
 
+  void back_button_click() {
+    setState(() {
+      currentScreen = LoginScreen.SHOW_MOBILE_SCREEN;
+    });
+  }
+
   void verify_otp() {
+    const AdvanceSnackBar(
+            message: "Checking..",
+            bgColor: Color(0xff3db536),
+            textAlign: TextAlign.center,
+            textSize: 12,
+            textColor: Colors.white,
+            isFixed: false)
+        .show(context);
     AuthCredential phoneAuthCredential = PhoneAuthProvider.credential(
         verificationId: verificationID, smsCode: code_by_user);
     signInWithPhoneAuthCred(phoneAuthCredential);
@@ -208,11 +222,24 @@ class _Main_verifyState extends State<Main_verify> {
           child: Center(
             child: Column(
               children: [
-                Container(
-                  margin: EdgeInsets.symmetric(horizontal: 20.w),
-                  width: 300.w,
-                  height: 300.h,
-                  child: Image.asset('assest/images/second.png'),
+                Stack(
+                  children: [
+                    Container(
+                      margin: EdgeInsets.symmetric(horizontal: 20.w),
+                      width: 300.w,
+                      height: 300.h,
+                      child: Image.asset('assest/images/second.png'),
+                    ),
+                    GestureDetector(
+                      onTap: back_button_click,
+                      child: Container(
+                          margin: EdgeInsets.symmetric(
+                              horizontal: 10.w, vertical: 10.h),
+                          width: 20.w,
+                          height: 20.h,
+                          child: Image.asset('assest/images/left-arrow.png')),
+                    )
+                  ],
                 ),
                 Container(
                   margin: EdgeInsets.symmetric(vertical: 20.w),
@@ -244,20 +271,42 @@ class _Main_verifyState extends State<Main_verify> {
                 ),
 
                 //for button click
-                GestureDetector(
-                  onTap: verify_otp,
-                  child: Container(
-                    width: 170.w,
-                    height: 50.h,
-                    decoration: const BoxDecoration(
-                        color: Color(0xffFF9C93),
-                        borderRadius: BorderRadius.all(Radius.circular(20))),
-                    child: const Center(
-                      child: Text("VERIFY",
-                          style:
-                              TextStyle(fontSize: 15, color: Colors.black54)),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    GestureDetector(
+                      onTap: verify_otp,
+                      child: Container(
+                        width: 120.w,
+                        height: 50.h,
+                        decoration: const BoxDecoration(
+                            color: Color(0xffFF9C93),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(20))),
+                        child: const Center(
+                          child: Text("VERIFY",
+                              style: TextStyle(
+                                  fontSize: 15, color: Colors.black54)),
+                        ),
+                      ),
                     ),
-                  ),
+                    GestureDetector(
+                      onTap: getotp,
+                      child: Container(
+                        width: 120.w,
+                        height: 50.h,
+                        decoration: const BoxDecoration(
+                            color: Color(0xffFF9C93),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(20))),
+                        child: const Center(
+                          child: Text("RESEND",
+                              style: TextStyle(
+                                  fontSize: 15, color: Colors.black54)),
+                        ),
+                      ),
+                    ),
+                  ],
                 )
               ],
             ),
