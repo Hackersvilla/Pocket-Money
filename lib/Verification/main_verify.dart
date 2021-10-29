@@ -44,11 +44,14 @@ class _Main_verifyState extends State<Main_verify> {
   @override
   void initState() {
     super.initState();
-    currentScreen == LoginScreen.SHOW_OTP_SCREEN ? start_timer() : null;
+    currentScreen == LoginScreen.SHOW_OTP_SCREEN
+        ? start_timer()
+        : const Text("RESEND",
+            style: TextStyle(fontSize: 15, color: Colors.black54));
   }
 
   Future start_timer() async {
-    await Timer(const Duration(seconds: 1), () {
+    Timer(const Duration(seconds: 1), () {
       setState(() {
         timer_text--;
         if (timer_text != 0) {
@@ -297,6 +300,17 @@ class _Main_verifyState extends State<Main_verify> {
                         width: 120.w,
                         height: 50.h,
                         decoration: const BoxDecoration(
+                            boxShadow: [
+                              BoxShadow(
+                                color: Color(0xffFF9C93),
+                                offset: Offset(
+                                  5.0,
+                                  5.0,
+                                ),
+                                blurRadius: 20.0,
+                                spreadRadius: 1.0,
+                              )
+                            ],
                             color: Color(0xffFF9C93),
                             borderRadius:
                                 BorderRadius.all(Radius.circular(20))),
@@ -313,6 +327,17 @@ class _Main_verifyState extends State<Main_verify> {
                         width: 120.w,
                         height: 50.h,
                         decoration: const BoxDecoration(
+                            boxShadow: [
+                              BoxShadow(
+                                color: Color(0xffFF9C93),
+                                offset: Offset(
+                                  5.0,
+                                  5.0,
+                                ),
+                                blurRadius: 20.0,
+                                spreadRadius: 1.0,
+                              )
+                            ],
                             color: Color(0xffFF9C93),
                             borderRadius:
                                 BorderRadius.all(Radius.circular(20))),

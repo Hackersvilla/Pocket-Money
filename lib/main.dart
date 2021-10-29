@@ -62,8 +62,8 @@ class _MyHomeState extends State<MyHome> {
             {
               Timer(
                   const Duration(seconds: 6),
-                  () => Navigator.pushReplacement(
-                      context, MaterialPageRoute(builder: (context) => Home())))
+                  () => Navigator.pushReplacement(context,
+                      MaterialPageRoute(builder: (scontext) => Home())))
             }
         });
   }
