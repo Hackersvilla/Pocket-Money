@@ -1,5 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -34,11 +36,26 @@ class Main_verify extends StatefulWidget {
 // ignore: camel_case_types
 class _Main_verifyState extends State<Main_verify> {
   String verificationID = "";
+
+  var timer_text = 30;
+  var text = "VERIFY";
   //functions
 
   @override
   void initState() {
     super.initState();
+    currentScreen == LoginScreen.SHOW_OTP_SCREEN ? start_timer() : null;
+  }
+
+  Future start_timer() async {
+    await Timer(const Duration(seconds: 1), () {
+      setState(() {
+        timer_text--;
+        if (timer_text != 0) {
+          start_timer();
+        }
+      });
+    });
   }
 
   void signInWithPhoneAuthCred(AuthCredential phoneAuthCredential) async {
@@ -299,9 +316,9 @@ class _Main_verifyState extends State<Main_verify> {
                             color: Color(0xffFF9C93),
                             borderRadius:
                                 BorderRadius.all(Radius.circular(20))),
-                        child: const Center(
-                          child: Text("RESEND",
-                              style: TextStyle(
+                        child: Center(
+                          child: Text('$timer_text',
+                              style: const TextStyle(
                                   fontSize: 15, color: Colors.black54)),
                         ),
                       ),
