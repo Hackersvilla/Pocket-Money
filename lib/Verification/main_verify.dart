@@ -23,7 +23,7 @@ String text_by_user = "";
 final _controller = ScrollController();
 final FirebaseAuth _auth = FirebaseAuth.instance;
 
-LoginScreen currentScreen = LoginScreen.SHOW_OTP_SCREEN;
+LoginScreen currentScreen = LoginScreen.SHOW_MOBILE_SCREEN;
 
 // ignore: camel_case_types
 class Main_verify extends StatefulWidget {
@@ -36,9 +36,10 @@ class Main_verify extends StatefulWidget {
 // ignore: camel_case_types
 class _Main_verifyState extends State<Main_verify> {
   String verificationID = "";
+  Color b_color = Colors.grey;
+  bool b_color_pink = false;
 
   var timer_text = 30;
-  var text = "VERIFY";
   //functions
 
   @override
@@ -57,6 +58,10 @@ class _Main_verifyState extends State<Main_verify> {
         if (timer_text != 0) {
           start_timer();
         }
+        if (timer_text == 0) {
+          b_color_pink = true;
+          b_color = const Color(0xffFF9C93);
+        }
       });
     });
   }
@@ -69,10 +74,9 @@ class _Main_verifyState extends State<Main_verify> {
             context, MaterialPageRoute(builder: (context) => Home()));
       }
     } on FirebaseAuthException catch (e) {
-      // ignore: avoid_print
-      print(e.message);
+      // ignore: avoid_prin
       ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Some Error Occured. Try Again Later')));
+          const SnackBar(content: Text("Something went wrong . Try Again")));
     }
   }
 
@@ -80,7 +84,7 @@ class _Main_verifyState extends State<Main_verify> {
     if (text_by_user.isEmpty) {
       const AdvanceSnackBar(
               message: "Write Number.",
-              bgColor: Color(0xff3db536),
+              bgColor: Colors.grey,
               textColor: Colors.white,
               textAlign: TextAlign.center,
               textSize: 12,
@@ -89,7 +93,7 @@ class _Main_verifyState extends State<Main_verify> {
     } else if (text_by_user.length < 10) {
       const AdvanceSnackBar(
               message: "Invalid Number.",
-              bgColor: Color(0xff3db536),
+              bgColor: Colors.grey,
               textAlign: TextAlign.center,
               textSize: 12,
               textColor: Colors.white,
@@ -99,7 +103,7 @@ class _Main_verifyState extends State<Main_verify> {
       pref.save_data(text_by_user);
       const AdvanceSnackBar(
               message: "Verify you are not robot!",
-              bgColor: Color(0xff3db536),
+              bgColor: Colors.grey,
               textAlign: TextAlign.center,
               textSize: 12,
               textColor: Colors.white,
@@ -119,6 +123,22 @@ class _Main_verifyState extends State<Main_verify> {
           },
           codeAutoRetrievalTimeout: (verificationID) async {});
     }
+  }
+
+  void resend_otp() async {
+    await _auth.verifyPhoneNumber(
+        phoneNumber: "+91${text_by_user}",
+        verificationCompleted: (phoneAuthCredential) async {},
+        verificationFailed: (verificationFailed) {
+          print(verificationFailed);
+        },
+        codeSent: (verificationID, resendingToken) async {
+          setState(() {
+            currentScreen = LoginScreen.SHOW_OTP_SCREEN;
+            this.verificationID = verificationID;
+          });
+        },
+        codeAutoRetrievalTimeout: (verificationID) async {});
   }
 
   void back_button_click() {
@@ -322,13 +342,15 @@ class _Main_verifyState extends State<Main_verify> {
                       ),
                     ),
                     GestureDetector(
-                      onTap: getotp,
+                      onTap: b_color_pink ? resend_otp : null,
                       child: Container(
                         width: 120.w,
                         height: 50.h,
-                        decoration: const BoxDecoration(
+                        decoration: BoxDecoration(
+                            color: b_color,
+                            // ignore: prefer_const_literals_to_create_immutables
                             boxShadow: [
-                              BoxShadow(
+                              const BoxShadow(
                                 color: Color(0xffFF9C93),
                                 offset: Offset(
                                   5.0,
@@ -338,18 +360,25 @@ class _Main_verifyState extends State<Main_verify> {
                                 spreadRadius: 1.0,
                               )
                             ],
-                            color: Color(0xffFF9C93),
                             borderRadius:
-                                BorderRadius.all(Radius.circular(20))),
-                        child: Center(
-                          child: Text('$timer_text',
-                              style: const TextStyle(
+                                const BorderRadius.all(Radius.circular(20))),
+                        child: const Center(
+                          child: Text('RESEND',
+                              style: TextStyle(
                                   fontSize: 15, color: Colors.black54)),
                         ),
                       ),
                     ),
                   ],
-                )
+                ),
+                SizedBox(
+                  height: 20.h,
+                ),
+                Text("Wait $timer_text sec to resend otp",
+                    style: const TextStyle(
+                      color: Colors.black54,
+                      fontSize: 15,
+                    ))
               ],
             ),
           ),
