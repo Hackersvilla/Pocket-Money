@@ -2,9 +2,11 @@
 
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
+import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 import 'package:pmoney/Main/home.dart';
 import 'package:advance_notification/advance_notification.dart';
 import 'package:pmoney/Services/shared_pref_ser.dart';
@@ -43,10 +45,7 @@ class _Main_verifyState extends State<Main_verify> {
   @override
   void initState() {
     super.initState();
-    currentScreen == LoginScreen.SHOW_OTP_SCREEN
-        ? start_timer()
-        : const Text("RESEND",
-            style: TextStyle(fontSize: 15, color: Colors.black54));
+    currentScreen == LoginScreen.SHOW_OTP_SCREEN ? start_timer() : null;
   }
 
   Future start_timer() async {
@@ -68,13 +67,16 @@ class _Main_verifyState extends State<Main_verify> {
     try {
       final authCred = await _auth.signInWithCredential(phoneAuthCredential);
       if (authCred.user != null) {
+        pref.save_data(text_by_user);
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => Home()));
       }
+    } on PlatformException catch (er) {
+      showToast(er.message,
+          context: context, animation: StyledToastAnimation.fade);
     } on FirebaseAuthException catch (e) {
-      // ignore: avoid_prin
-      ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Something went wrong . Try Again")));
+      showToast(e.message,
+          context: context, animation: StyledToastAnimation.fade);
     }
   }
 
@@ -98,7 +100,6 @@ class _Main_verifyState extends State<Main_verify> {
               isFixed: false)
           .show(context);
     } else {
-      pref.save_data(text_by_user);
       const AdvanceSnackBar(
               message: "Verify you are not robot!",
               bgColor: Colors.grey,
@@ -146,14 +147,17 @@ class _Main_verifyState extends State<Main_verify> {
   }
 
   void verify_otp() {
-    const AdvanceSnackBar(
-            message: "Checking..",
-            bgColor: Color(0xff3db536),
-            textAlign: TextAlign.center,
-            textSize: 12,
-            textColor: Colors.white,
-            isFixed: false)
-        .show(context);
+    print(code_by_user);
+    if (code_by_user == null || code_by_user == 0) {
+      const AdvanceSnackBar(
+              message: "Enter Otp First",
+              bgColor: Colors.grey,
+              textAlign: TextAlign.center,
+              textSize: 12,
+              textColor: Colors.white,
+              isFixed: false)
+          .show(context);
+    }
     AuthCredential phoneAuthCredential = PhoneAuthProvider.credential(
         verificationId: verificationID, smsCode: code_by_user);
     signInWithPhoneAuthCred(phoneAuthCredential);
