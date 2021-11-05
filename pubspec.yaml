@@ -56,10 +56,15 @@ dependencies:
 
   #styledtoast
   flutter_styled_toast: ^2.0.0
+  fluttertoast: ^8.0.8
   advance_notification: ^1.0.5
 
   #shared prefrences
   shared_preferences: ^2.0.8
+
+  #email Validator
+  email_validator: ^2.0.1
+  email_auth: ^1.0.0
 
 dev_dependencies:
   flutter_test:
