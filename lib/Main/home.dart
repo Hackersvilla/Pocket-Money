@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:lottie/lottie.dart';
 
 class Home extends StatefulWidget {
   Home({Key? key}) : super(key: key);
@@ -10,19 +9,40 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  var animated_cont_width = 300.w;
-  var animated_cont_height = 70.h;
-
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
-        child: SizedBox(
-          width: double.infinity,
-          height: double.infinity,
-          child: Text("Home Page"),
-        ),
-      ),
-    );
+    return Scaffold(
+        backgroundColor: Colors.blueGrey[900],
+        body: SafeArea(
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: 20.h),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        child: Row(
+                          children: const [
+                            SizedBox(
+                              child: Icon(Icons.attach_money_rounded,
+                                  color: Colors.white),
+                            ),
+                            SizedBox(
+                              child: Text("0",
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 18)),
+                            )
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ),
+        ));
   }
 }

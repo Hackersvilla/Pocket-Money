@@ -8,6 +8,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:pmoney/Services/scroll_glow.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,7 +30,8 @@ class MyApp extends StatelessWidget {
           fontFamily: GoogleFonts.lato().fontFamily,
           primarySwatch: Colors.blue,
         ),
-        home: const MyHome(),
+        home:
+            ScrollConfiguration(behavior: MyBehavior(), child: const MyHome()),
       ),
     );
   }
@@ -70,7 +72,7 @@ class _MyHomeState extends State<MyHome> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.blueGrey[900],
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -85,7 +87,7 @@ class _MyHomeState extends State<MyHome> {
             animatedTexts: [
               TypewriterAnimatedText(
                 'Pocket Money',
-                textStyle: const TextStyle(fontSize: 30),
+                textStyle: const TextStyle(fontSize: 30, color: Colors.white),
               ),
             ],
           ),

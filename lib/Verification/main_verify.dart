@@ -75,6 +75,7 @@ class _Main_verifyState extends State<Main_verify> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: Colors.blueGrey[900],
         body: current_screen == Screen.SHOW_EMAIL_SCREEN
             ? showEmailScreen(context)
             : showOTPScreen(context));
@@ -84,79 +85,82 @@ class _Main_verifyState extends State<Main_verify> {
   showEmailScreen(context) {
     return SafeArea(
       child: SingleChildScrollView(
-          child: Column(
-        children: [
-          //make for the image
-          Container(
-            margin: EdgeInsets.symmetric(horizontal: 20.w),
-            height: 300.h,
-            width: 300.w,
-            child: const Image(
-              image: AssetImage('assest/images/first.png'),
+        child: Column(
+          children: [
+            //make for the image
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 20.w),
+              height: 300.h,
+              width: 300.w,
+              child: const Image(
+                image: AssetImage('assest/images/first.png'),
+              ),
             ),
-          ),
-          //text
-          const SizedBox(
-            child: Text(
-              "Email Verification",
-              style: TextStyle(fontSize: 30),
+            //text
+            const SizedBox(
+              child: Text(
+                "Email Verification",
+                style: TextStyle(fontSize: 30, color: Colors.white),
+              ),
             ),
-          ),
-          SizedBox(
-            height: 30.h,
-          ),
-          //make for textfield
-          Container(
-            padding: EdgeInsets.all(30.sp),
-            child: TextField(
-              controller: _emailController,
-              onChanged: (v) {
-                email_by_user = v;
-              },
-              keyboardType: TextInputType.emailAddress,
-              decoration: const InputDecoration(
-                prefixIcon: Icon(Icons.email_rounded, color: Colors.black),
-                label: Text("Enter Email"),
-                labelStyle: TextStyle(color: Colors.grey),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(10)),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(10)),
+            SizedBox(
+              height: 30.h,
+            ),
+            //make for textfield
+            Container(
+              padding: EdgeInsets.all(30.sp),
+              child: TextField(
+                style: const TextStyle(color: Colors.white),
+                controller: _emailController,
+                onChanged: (v) {
+                  email_by_user = v;
+                },
+                keyboardType: TextInputType.emailAddress,
+                decoration: const InputDecoration(
+                  prefixIcon: Icon(Icons.email_rounded, color: Colors.white),
+                  label: Text("Enter Email"),
+                  labelStyle: TextStyle(color: Colors.grey),
+                  focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      borderSide: BorderSide(color: Colors.white)),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.white),
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                  ),
                 ),
               ),
             ),
-          ),
-          //button to get otp
-          GestureDetector(
-            onTap: send_email_otp,
-            child: Container(
-              width: 200.w,
-              height: 50.h,
-              decoration: BoxDecoration(
-                  boxShadow: const [
-                    BoxShadow(
-                      color: Color(0xffFF9C93),
-                      offset: Offset(
-                        5.0,
-                        5.0,
-                      ),
-                      blurRadius: 20.0,
-                      spreadRadius: 1.0,
-                    )
-                  ],
-                  color: const Color(0xffFF9C93),
-                  borderRadius: BorderRadius.circular(30)),
-              child: const Center(
-                child: Text(
-                  "Get Otp",
-                  style: TextStyle(fontSize: 15, color: Colors.black54),
+            //button to get otp
+            GestureDetector(
+              onTap: send_email_otp,
+              child: Container(
+                width: 200.w,
+                height: 50.h,
+                decoration: BoxDecoration(
+                    boxShadow: const [
+                      BoxShadow(
+                        color: Color(0xffFF9C93),
+                        offset: Offset(
+                          5.0,
+                          5.0,
+                        ),
+                        blurRadius: 20.0,
+                        spreadRadius: 1.0,
+                      )
+                    ],
+                    color: const Color(0xffFF9C93),
+                    borderRadius: BorderRadius.circular(30)),
+                child: const Center(
+                  child: Text(
+                    "Get Otp",
+                    style: TextStyle(fontSize: 15, color: Colors.black54),
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
-      )),
+          ],
+        ),
+      ),
     );
   }
 
@@ -179,7 +183,8 @@ class _Main_verifyState extends State<Main_verify> {
                     margin: EdgeInsets.symmetric(vertical: 10.h),
                     width: 30.w,
                     height: 30.h,
-                    child: Image.asset('assest/images/left-arrow.png')),
+                    child: const Icon(Icons.arrow_back_ios_new,
+                        color: Colors.white)),
               ),
               Container(
                 margin: EdgeInsets.symmetric(horizontal: 20.w),
@@ -195,18 +200,19 @@ class _Main_verifyState extends State<Main_verify> {
           const SizedBox(
             child: Text(
               "Enter Otp",
-              style: TextStyle(fontSize: 30),
+              style: TextStyle(fontSize: 30, color: Colors.white),
             ),
           ),
           SizedBox(
             height: 50.h,
           ),
           OtpTextField(
+            textStyle: const TextStyle(color: Colors.white),
             numberOfFields: 6,
-            borderColor: Colors.black,
+            borderColor: Colors.white,
             showFieldAsBox: true,
-            enabledBorderColor: Colors.black54,
-            focusedBorderColor: Colors.black54,
+            enabledBorderColor: Colors.white,
+            focusedBorderColor: Colors.white,
             onCodeChanged: (String code) {
               setState(() {
                 code_by_user = code;
