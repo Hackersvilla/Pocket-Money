@@ -5,6 +5,7 @@ import 'package:email_validator/email_validator.dart';
 import 'package:email_auth/email_auth.dart';
 import 'package:pmoney/Main/home.dart';
 import 'package:pmoney/Services/shared_pref_ser.dart';
+import 'package:concentric_transition/concentric_transition.dart';
 
 enum Screen { SHOW_EMAIL_SCREEN, SHOW_OTP_SCREEN }
 
@@ -33,7 +34,6 @@ class _Main_verifyState extends State<Main_verify> {
   }
 
   void send_otp() async {
-    print(_emailController.text);
     bool res = await emailAuth.sendOtp(
         recipientMail: _emailController.text, otpLength: 5);
     if (res) {
@@ -55,7 +55,21 @@ class _Main_verifyState extends State<Main_verify> {
   }
 
   void send_email_otp() {
-    send_otp();
+    if (email_by_user == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Enter Email First'),
+        ),
+      );
+    } else if (EmailValidator.validate(email_by_user)) {
+      send_otp();
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Invalid Email'),
+        ),
+      );
+    }
   }
 
   @override
@@ -153,13 +167,29 @@ class _Main_verifyState extends State<Main_verify> {
           child: Column(
         children: [
           //make for the image
-          Container(
-            margin: EdgeInsets.symmetric(horizontal: 20.w),
-            height: 300.h,
-            width: 300.w,
-            child: const Image(
-              image: AssetImage('assest/images/second.png'),
-            ),
+          Stack(
+            children: [
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    current_screen = Screen.SHOW_EMAIL_SCREEN;
+                  });
+                },
+                child: Container(
+                    margin: EdgeInsets.symmetric(vertical: 10.h),
+                    width: 30.w,
+                    height: 30.h,
+                    child: Image.asset('assest/images/left-arrow.png')),
+              ),
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 20.w),
+                height: 300.h,
+                width: 300.w,
+                child: const Image(
+                  image: AssetImage('assest/images/second.png'),
+                ),
+              ),
+            ],
           ),
           //text
           const SizedBox(
@@ -197,7 +227,13 @@ class _Main_verifyState extends State<Main_verify> {
                   ),
                 );
                 Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => Home()));
+                  context,
+                  ConcentricPageRoute(
+                    builder: (ctx) {
+                      return Home();
+                    },
+                  ),
+                );
               } else {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
@@ -206,7 +242,7 @@ class _Main_verifyState extends State<Main_verify> {
                 );
               }
             }, // end onSubmit
-          )
+          ),
         ],
       )),
     );

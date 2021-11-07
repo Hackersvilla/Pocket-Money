@@ -37,7 +37,8 @@ dependencies:
 
   #lottiefiles animation
   lottie: ^1.2.1
-
+  concentric_transition: ^1.0.1+1
+  
   #google fonts
   google_fonts: ^2.1.0
 
@@ -94,6 +95,7 @@ flutter:
     - assest/images/first.png
     - assest/images/second.png
     - assest/images/left-arrow.png
+    - assest/anim/page.json
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 
