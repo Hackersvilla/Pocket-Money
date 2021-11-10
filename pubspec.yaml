@@ -96,6 +96,7 @@ flutter:
     - assest/images/second.png
     - assest/images/left-arrow.png
     - assest/anim/page.json
+    - assest/images/rupee.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 
