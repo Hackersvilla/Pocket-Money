@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pmoney/Screens/spin.dart';
 
 class Home extends StatefulWidget {
-  Home({Key? key}) : super(key: key);
+  const Home({key}) : super(key: key);
 
   @override
   _HomeState createState() => _HomeState();
@@ -12,7 +12,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   void spin_tap() {
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => SpinScreen()));
+        context, MaterialPageRoute(builder: (context) => Roulette()));
   }
 
   @override

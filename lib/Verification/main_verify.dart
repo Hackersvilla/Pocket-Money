@@ -10,7 +10,7 @@ import 'package:concentric_transition/concentric_transition.dart';
 enum Screen { SHOW_EMAIL_SCREEN, SHOW_OTP_SCREEN }
 
 class Main_verify extends StatefulWidget {
-  const Main_verify({Key? key}) : super(key: key);
+  const Main_verify({key}) : super(key: key);
 
   @override
   _Main_verifyState createState() => _Main_verifyState();
@@ -24,7 +24,7 @@ class _Main_verifyState extends State<Main_verify> {
 
   TextEditingController otpController = TextEditingController();
 
-  late EmailAuth emailAuth;
+  EmailAuth emailAuth;
   SharedPref pref = SharedPref();
 
   @override
