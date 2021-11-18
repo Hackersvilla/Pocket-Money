@@ -24,7 +24,7 @@ class _Main_verifyState extends State<Main_verify> {
 
   TextEditingController otpController = TextEditingController();
 
-  EmailAuth emailAuth;
+  late EmailAuth emailAuth;
   SharedPref pref = SharedPref();
 
   @override
