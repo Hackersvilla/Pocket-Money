@@ -13,6 +13,7 @@ import 'package:pmoney/Services/scroll_glow.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+
   runApp(const MyApp());
 }
 

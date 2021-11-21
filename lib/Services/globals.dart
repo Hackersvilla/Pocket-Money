@@ -1,16 +1,12 @@
 library my_prej.globals;
 
-var score = 0;
-late int selected;
-var final_value;
+final items = <int>[
+  100,
+  100,
+  500,
+  300,
+  400,
+  200,
+];
+int main_score = 0;
 
-final Map<int, String> labels = {
-  1: '\$ 1000 ',
-  2: '\$ 400 ',
-  3: '\$ 800 ',
-  4: '\$ 7000 ',
-  5: '\$ 5000 ',
-  6: '\$ 300 ',
-  7: '\$ 2000 ',
-  8: '\$ 100 ',
-};

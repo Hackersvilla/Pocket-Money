@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:pmoney/Screens/scratch.dart';
 import 'package:pmoney/Screens/spin.dart';
+import 'package:pmoney/Services/globals.dart';
 
 class Home extends StatefulWidget {
   const Home({key}) : super(key: key);
@@ -13,6 +15,11 @@ class _HomeState extends State<Home> {
   void spin_tap() {
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => Roulette()));
+  }
+
+  void scratch_tap() {
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => ScratchCards()));
   }
 
   @override
@@ -50,23 +57,21 @@ class _HomeState extends State<Home> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const SizedBox(
-            child: Text("Balance",
+            child: Text("Points",
                 style: TextStyle(color: Colors.white, fontSize: 20)),
           ),
           Container(
             margin: EdgeInsets.symmetric(vertical: 10.h),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
+              children: [
+                const SizedBox(
+                    child:
+                        Icon(Icons.attach_money_rounded, color: Colors.white)),
                 SizedBox(
-                  child: Image(
-                      width: 20,
-                      height: 20,
-                      image: AssetImage('assest/images/rupee.png')),
-                ),
-                SizedBox(
-                  child: Text("100",
-                      style: TextStyle(color: Colors.white, fontSize: 18)),
+                  child: Text("$main_score",
+                      style:
+                          const TextStyle(color: Colors.white, fontSize: 18)),
                 )
               ],
             ),
@@ -172,14 +177,18 @@ class _HomeState extends State<Home> {
               vertical: 20.h,
               horizontal: 20.h,
             ),
-            child: Container(
-              width: 60.w,
-              height: 60.h,
-              decoration: BoxDecoration(
-                  color: Colors.white, borderRadius: BorderRadius.circular(80)),
-              child: const Icon(
-                Icons.keyboard_arrow_left_outlined,
-                size: 30,
+            child: GestureDetector(
+              onTap: scratch_tap,
+              child: Container(
+                width: 60.w,
+                height: 60.h,
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(80)),
+                child: const Icon(
+                  Icons.keyboard_arrow_left_outlined,
+                  size: 30,
+                ),
               ),
             ),
           ),
