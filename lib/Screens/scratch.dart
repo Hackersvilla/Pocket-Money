@@ -1,5 +1,5 @@
 import 'dart:math';
-
+import 'package:pmoney/Services/globals.dart' as globals;
 import 'package:flutter/material.dart';
 import 'package:scratcher/scratcher.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -13,7 +13,6 @@ class ScratchCards extends StatefulWidget {
 
 class _ScratchCardsState extends State<ScratchCards> {
   int random_number = Random().nextInt(50);
-  final scratchKey = GlobalKey<ScratcherState>();
 
   Future<void> _showMyDialog() async {
     return showDialog<void>(
@@ -21,20 +20,58 @@ class _ScratchCardsState extends State<ScratchCards> {
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         return AlertDialog(
+          backgroundColor: Colors.blueGrey[900],
+          elevation: 10,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                Text('Claim $random_number Points'),
-              ],
+            child: Center(
+              child: ListBody(
+                children: <Widget>[
+                  Text('Claim $random_number Points',
+                      style: const TextStyle(color: Colors.white)),
+                ],
+              ),
             ),
           ),
           actions: <Widget>[
-            TextButton(
-              child: const Text('Collect'),
-              onPressed: () {
-                Navigator.of(context).pop();
+            GestureDetector(
+              onTap: () {
+                Navigator.pop(context);
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text("$random_number is added",
+                        style: const TextStyle(color: Colors.white))));
+                setState(() {
+                  random_number = Random().nextInt(50);
+                });
               },
+              child: Container(
+                width: 50.w,
+                height: 30.h,
+                decoration: BoxDecoration(
+                    color: Colors.green.shade300,
+                    borderRadius: BorderRadius.circular(5)),
+                child: const Center(
+                    child: Text("Yes", style: TextStyle(color: Colors.white))),
+              ),
             ),
+            GestureDetector(
+              onTap: () {
+                Navigator.pop(context);
+                setState(() {
+                  random_number = Random().nextInt(50);
+                });
+              },
+              child: Container(
+                width: 50.w,
+                height: 30.h,
+                decoration: BoxDecoration(
+                    color: Colors.red.shade300,
+                    borderRadius: BorderRadius.circular(5)),
+                child: const Center(
+                    child: Text("No", style: TextStyle(color: Colors.white))),
+              ),
+            )
           ],
         );
       },
@@ -55,10 +92,16 @@ class _ScratchCardsState extends State<ScratchCards> {
         )
       ], color: Colors.blueGrey[900], borderRadius: BorderRadius.circular(30)),
       child: Scratcher(
-        key: scratchKey,
+        key: globals.scratchKey,
         brushSize: 30,
         threshold: 50,
-        onScratchEnd: () {},
+        onScratchEnd: () {
+          print("Scratch End");
+          globals.scratchKey.currentState
+              ?.reset(duration: const Duration(seconds: 1));
+
+          _showMyDialog();
+        },
         color: (Colors.blue[300])!,
         onChange: (value) => {},
         child: SizedBox(
@@ -94,7 +137,7 @@ class _ScratchCardsState extends State<ScratchCards> {
                 GestureDetector(
                   onTap: () {
                     setState(() {
-                      scratchKey.currentState
+                      globals.scratchKey.currentState
                           ?.reset(duration: const Duration(milliseconds: 2000));
                       random_number = Random().nextInt(50);
                     });
