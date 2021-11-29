@@ -14,6 +14,17 @@ class ScratchCards extends StatefulWidget {
 class _ScratchCardsState extends State<ScratchCards> {
   int random_number = Random().nextInt(50);
 
+  void yes_button_tap() {
+    globals.main_score += random_number;
+    Navigator.pop(context);
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("$random_number is added",
+            style: const TextStyle(color: Colors.white))));
+    setState(() {
+      random_number = Random().nextInt(50);
+    });
+  }
+
   Future<void> _showMyDialog() async {
     return showDialog<void>(
       context: context,
@@ -37,13 +48,7 @@ class _ScratchCardsState extends State<ScratchCards> {
           actions: <Widget>[
             GestureDetector(
               onTap: () {
-                Navigator.pop(context);
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    content: Text("$random_number is added",
-                        style: const TextStyle(color: Colors.white))));
-                setState(() {
-                  random_number = Random().nextInt(50);
-                });
+                yes_button_tap();
               },
               child: Container(
                 width: 50.w,
@@ -128,45 +133,9 @@ class _ScratchCardsState extends State<ScratchCards> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SizedBox(
-                  height: 100.h,
+                  height: 200.h,
                 ),
                 get_a_scratch_card(),
-                SizedBox(
-                  height: 100.h,
-                ),
-                GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      globals.scratchKey.currentState
-                          ?.reset(duration: const Duration(milliseconds: 2000));
-                      random_number = Random().nextInt(50);
-                    });
-                  },
-                  child: Container(
-                    width: 200.w,
-                    height: 50.h,
-                    decoration: BoxDecoration(
-                        boxShadow: const [
-                          BoxShadow(
-                            color: Color(0xffFF9C93),
-                            offset: Offset(
-                              5.0,
-                              5.0,
-                            ),
-                            blurRadius: 20.0,
-                            spreadRadius: 1.0,
-                          )
-                        ],
-                        color: const Color(0xffFF9C93),
-                        borderRadius: BorderRadius.circular(30)),
-                    child: const Center(
-                      child: Text(
-                        "New Card",
-                        style: TextStyle(fontSize: 15, color: Colors.black87),
-                      ),
-                    ),
-                  ),
-                )
               ],
             ),
           ),
